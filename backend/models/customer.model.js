@@ -1,0 +1,48 @@
+import mongoose from 'mongoose';
+
+const customerSchema = new mongoose.Schema({
+    fullName: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    phone: {
+        type: String,
+        required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    wishlist: {
+        type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' },],
+        default: []
+    },
+    cart: {
+        type: [
+            {
+                product: {
+                    _id: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
+                    name: { type: String },
+                    price: { type: Number },
+                    image: { type: String },
+                    stock: { type: Number }
+                },
+                quantity: { type: Number, default: 1, min: 1 }
+            }
+        ],
+        default: []
+    }
+
+})
+
+const Customer = mongoose.model('Customer', customerSchema)
+export default Customer;
